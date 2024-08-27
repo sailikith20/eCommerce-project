@@ -1,0 +1,33 @@
+{% include 'nav.html'%}
+<br>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card p-4 mt-3 m-5">
+                <div class="text-center h3">Add Category</div>
+                <form action="addCategory" method="post">
+                    <div class="">
+                        <label>Category</label>
+                        <input type="text" name="category_name" class="form-control mt-1" placeholder="Enter category">
+                    </div>
+                    <input type="submit" value="Add" class="btn btn-primary w-50 mt-2" style="font-size:13px">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-5 m-2">
+            <div class="text-center h5">Categories</div>
+            <table class="table table-bordered">
+              <thead>
+              <tr>Category</tr>
+              </thead>
+                <tbody>
+                {% for category in categories%}
+                <tr>
+                    <td>{{category['category_name']}}</td>
+                </tr>
+                {% endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

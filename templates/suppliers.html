@@ -1,0 +1,42 @@
+{% include 'nav.html'%}
+<br>
+<div class="container-fluid mt-3">
+    <div class="text-center h5">Suppliers</div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Verify</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for supplier in suppliers %}
+        <tr>
+            <td>{{supplier['name']}}</td>
+             <td>{{supplier['email']}}</td>
+             <td>{{supplier['phone']}}</td>
+             <td>{{supplier['company_name']}}</td>
+             <td>{{supplier['location']}}</td>
+            <td>{{supplier['address']}}</td>
+            <td>{{supplier['status']}}
+            <br>
+                {% if supplier['status']=='Not Verified'%}
+                <a href="verifySupplier?supplierId={{supplier['_id']}}" class="btn btn-primary w-100 mt-2">Verify</a>
+                {% endif%}
+            </td>
+            <td>
+                        {% if supplier['status'] == 'Verified' %}
+                            <a class="under-line" href="verifySupplier1?supplierId={{supplier['_id']}}">De-Verify</a>
+                        {% endif %}
+            </td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>

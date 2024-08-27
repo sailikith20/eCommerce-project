@@ -1,0 +1,133 @@
+{% include 'nav.html'%}
+<br>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="text-center h6">Retailers Order History</div>
+            <div class="card p-3 mt-2">
+                {% for order in orders %}
+            {% set totalPrice = namespace(value=0) %}
+            {%set retailer = get_retailer_by_id(order['retailerId'])%}
+            {%set order_items = get_order_item_by_id(order['_id'])%}
+            {% set totalPrice = namespace(value=0) %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Order By (Retailer)</div>
+                        <div style="font-size:20px" class="text-primary">{{retailer['name']}}({{retailer['phone']}})</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Date</div>
+                        <div style="font-size:20px" class="text-primary">{{order['date'].strftime("%d-%m-%Y %I:%M %p")}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Status</div>
+                        <div style="font-size:20px" class="text-primary">{{order['status']}}</div>
+                    </div>
+                    {% if order['status']!='cart'%}
+                     <div class="col-md-3">
+                         <a href="view_order_payment?order_id={{order['_id']}}" class="btn btn-primary mt-3">View Payment</a>
+                    </div>
+                    {% endif%}
+                </div>
+                <table class="table table-bordered table-sm mt-5" style="font-size:20px">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Color</th>
+                            <th>Cloth Type</th>
+                            <th>Ordered</th>
+                            <th>Item Price</th>
+                            <th>Total Price <br><b style="font-size:13px">(Purchased Quantity)*(Item Price)</b></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                          {% for order_item in order_items%}
+                          {%set cloth_inventory = get_cloth_inventory_by_id(order_item['cloth_inventory_id'])%}
+                          {% set totalPrice.value = totalPrice.value +float(cloth_inventory['price']) * float(order_item['quantity']) %}
+                          <tr>
+                               <td><img src="../static/cloth/{{cloth_inventory['picture']}}" style="width:50%;height:40px"><br>{{cloth_inventory['item_name']}}</td>
+                               <td>{{cloth_inventory['cloth_color']}}</td>
+                               <td>{{cloth_inventory['cloth_type']}}</td>
+                              <td>{{order_item['quantity']}}</td>
+                              <td>₹{{cloth_inventory['price']}}</td>
+                              <td>₹{{float(cloth_inventory['price'])*float(order_item['quantity'])}}</td>
+                          </tr>
+                           {% endfor%}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="5"><b>₹{{totalPrice.value}}</b></td>
+                            </tr>
+                    </tbody>
+                </table>
+                 <hr>
+        {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-center h6">Suppliers Order History</div>
+            <div class="card p-3 mt-2">
+            {% for purchase in purchases %}
+            {% set totalPrice = namespace(value=0) %}
+            {%set supplier = get_supplier_by_id(purchase['supplierId'])%}
+            {%set purchase_items = get_purchase_item_by_id(purchase['_id'])%}
+            {% set totalPrice = namespace(value=0) %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Purchased By (Supplier)</div>
+                        <div style="font-size:20px" class="text-primary">{{supplier['name']}}({{supplier['phone']}})</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Date</div>
+                        <div style="font-size:20px" class="text-primary">{{purchase['date'].strftime("%d-%m-%Y %I:%M %p")}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-danger" style="font-size:15px">Status</div>
+                        <div style="font-size:20px" class="text-primary">{{purchase['status']}}</div>
+                    </div>
+                    {% if purchase['status']!='cart'%}
+                     <div class="col-md-4">
+                         <a href="view_purchase_payment?purchase_id={{purchase['_id']}}" class="btn btn-primary mt-3">View Payment</a>
+                    </div>
+                    {% endif%}
+                </div>
+                <table class="table table-bordered table-sm mt-5" style="font-size:20px">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Color</th>
+                            <th>Cloth Type</th>
+                            <th>Ordered</th>
+                            <th>Item Price</th>
+                            <th>Total Price <br><b style="font-size:13px">(Purchased Quantity)*(Item Price)</b></th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                          {% for purchase_item in purchase_items%}
+                          {%set cloth_inventory = get_cloth_inventory_by_id(purchase_item['cloth_inventory_id'])%}
+                          {% set totalPrice.value = totalPrice.value +float(cloth_inventory['price']) * float(purchase_item['quantity']) %}
+                          <tr>
+                               <td><img src="../static/cloth/{{cloth_inventory['picture']}}" style="width:50%;height:40px"><br>{{cloth_inventory['item_name']}}</td>
+                               <td>{{cloth_inventory['cloth_color']}}</td>
+                               <td>{{cloth_inventory['cloth_type']}}</td>
+                              <td>{{purchase_item['quantity']}}</td>
+                              <td>₹{{cloth_inventory['price']}}</td>
+                              <td>₹{{float(cloth_inventory['price'])*float(purchase_item['quantity'])}}</td>
+                          </tr>
+                           {% endfor%}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="5"><b>₹{{totalPrice.value}}</b></td>
+                            </tr>
+                    </tbody>
+                </table>
+                <hr>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>

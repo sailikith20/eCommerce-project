@@ -1,0 +1,370 @@
+<head>
+  <title>Cloth Inventory</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+{% if session['role']=='admin'%}
+<div class="nav-area">
+  <div class=""><label class="btn-area"><i class="fa fa-bars ml-5 "></i>Cloth Inventory</label></div>
+  <ul>
+            <li><a href="/AdminHome" class="nav-link text-white btn btn-danger">Admin Home</a></li>
+            <li><a href="/categories" class="nav-link text-white btn btn-danger">Categories</a></li>
+            <li><a href="/suppliers" class="nav-link text-white btn btn-danger">Suppliers</a></li>
+            <li><a href="/clothInventory" class="nav-link text-white btn btn-danger">Items</a></li>
+            <li><a href="/purchasedItems?status=ordered" class="nav-link text-white btn btn-danger">Supplier Orders</a></li>
+            <li><a href="/viewOrders?status=ordered" class="nav-link text-white btn btn-danger">Retailer Orders</a></li>
+            <li><a href="/allOrdersHistory" class="nav-link text-white btn btn-danger">Orders History</a></li>
+            <li><a href="/logout" class="nav-link text-white btn btn-danger">Logout</a></li>
+</ul>
+</div>
+<style>
+   *{
+padding: 0;
+margin: 0;
+text-decoration: none;
+list-style: none;
+box-sizing: border-box;
+}
+body{
+font-family: lato;
+}
+.nav-area{
+background: #262626;
+height: 62px;
+width: 100%;
+}
+.logo {
+line-height: 70px;
+padding: 0 40px;
+}
+.nav-area ul{
+float: right;
+margin-right: 2 0px;
+display:contents;
+}
+.nav-area ul li {
+display: inline-block;
+line-height: 30px;
+margin: 0 5px;
+}
+.nav-area ul li a {
+color: #fff;
+font-size: 14px;
+padding: 22px 15px;
+text-transform: uppercase;
+font-weight: bold;
+}
+
+.btn-area{
+font-size: 30px;
+color: white;
+float: left;
+line-height: 62px;
+margin-right: 40px;
+display: block;
+}
+#box{
+display: none;
+}
+@media (max-width: 860px){
+.btn-area{
+display: block;
+}
+.nav-area ul{
+position: fixed;
+width: 100%;
+height: 100vh;
+top: 62px;
+left: -100%;
+text-align: center;
+transition: all .5s;
+}
+.nav-area ul li {
+display: block;
+margin: 0;
+line-height: 30px;
+padding: 25px 0;
+}
+.nav-area ul li a{
+font-size: 30px;
+}
+
+
+#box:checked ~ ul{
+left: 0;
+}
+}
+
+</style>
+{% elif session['role']=='supplier'%}
+<div class="nav-area">
+  <label for="box" class="btn-area"><i class="fa fa-bars m-2"></i>Cloth Inventory</label>
+  <ul>
+     <li><a href="/supplierHome" class="nav-link text-white  btn btn-danger">Search Items</a></li>
+    <li><a href="/purchasedItems?status=cart" class="nav-link text-white  btn btn-danger">Cart</a></li>
+    <li><a href="/purchasedItems?status=ordered" class="nav-link text-white  btn btn-danger">Orders</a></li>
+ <li><a href="/purchasedItems?status=history" class="nav-link text-white  btn btn-danger">Purchase History</a></li>
+<li><a href="/logout" class="nav-link text-white  btn btn-danger">Logout</a></li>
+
+</ul>
+</div>
+
+<style>
+    *{
+padding: 0;
+margin: 0;
+text-decoration: none;
+list-style: none;
+box-sizing: border-box;
+}
+body{
+font-family: lato;
+}
+.nav-area{
+background: #262626;
+height: 62px;
+width: 100%;
+}
+.logo {
+line-height: 70px;
+padding: 0 40px;
+}
+.nav-area ul{
+float: right;
+margin-right: 20px;
+}
+.nav-area ul li {
+display: inline-block;
+line-height: 30px;
+margin: 0 5px;
+}
+.nav-area ul li a {
+color: #fff;
+font-size: 14px;
+padding: 22px 15px;
+text-transform: uppercase;
+font-weight: bold;
+}
+
+.btn-area{
+font-size: 30px;
+color: white;
+float: left;
+line-height: 62px;
+margin-right: 40px;
+}
+#box{
+display: none;
+}
+@media (max-width: 860px){
+.btn-area{
+display: block;
+}
+.nav-area ul{
+position: fixed;
+width: 100%;
+height: 100vh;
+top: 62px;
+left: -100%;
+text-align: center;
+transition: all .5s;
+}
+.nav-area ul li {
+display: block;
+margin: 0;
+line-height: 30px;
+padding: 25px 0;
+}
+.nav-area ul li a{
+font-size: 30px;
+}
+
+
+#box:checked ~ ul{
+left: 0;
+}
+}
+
+</style>
+{% elif session['role']=='retailer'%}
+<div class="nav-area">
+  <label for="box" class="btn-area"><i class="fa fa-bars m-2"></i>Cloth Inventory</label>
+  <ul>
+     <li><a href="/retailerHome" class="nav-link text-white  btn btn-danger">Search Items</a></li>
+    <li><a href="/viewOrders?status=cart" class="nav-link text-white  btn btn-danger">Cart</a></li>
+      <li><a href="/viewOrders?status=ordered" class="nav-link text-white  btn btn-danger">Orders</a></li>
+       <li><a href="/viewOrders?status=history" class="nav-link text-white btn btn-danger">Orders History</a></li>
+      <li><a href="/logout" class="nav-link text-white btn btn-danger">Logout</a></li>
+
+</ul>
+</div>
+
+<style>
+    *{
+padding: 0;
+margin: 0;
+text-decoration: none;
+list-style: none;
+box-sizing: border-box;
+}
+body{
+font-family: lato;
+}
+.nav-area{
+background: #262626;
+height: 62px;
+width: 100%;
+}
+.logo {
+line-height: 70px;
+padding: 0 40px;
+}
+.nav-area ul{
+float: right;
+margin-right: 20px;
+}
+.nav-area ul li {
+display: inline-block;
+line-height: 30px;
+margin: 0 5px;
+}
+.nav-area ul li a {
+color: #fff;
+font-size: 14px;
+padding: 22px 15px;
+text-transform: uppercase;
+font-weight: bold;
+}
+
+.btn-area{
+font-size: 30px;
+color: white;
+float: left;
+line-height: 62px;
+margin-right: 40px;
+}
+#box{
+display: none;
+}
+@media (max-width: 860px){
+.btn-area{
+display: block;
+}
+.nav-area ul{
+position: fixed;
+width: 100%;
+height: 100vh;
+top: 62px;
+left: -100%;
+text-align: center;
+transition: all .5s;
+}
+.nav-area ul li {
+display: block;
+margin: 0;
+line-height: 30px;
+padding: 25px 0;
+}
+.nav-area ul li a{
+font-size: 30px;
+}
+
+
+#box:checked ~ ul{
+left: 0;
+}
+}
+
+</style>
+{% else%}
+<div class="nav-area">
+  <label for="box" class="btn-area"><i class="fa fa-bars m-2"></i>Cloth Inventory</label>
+  <ul>
+<li><a href="/" class="nav-link text-white btn btn-danger">Home</a></li>
+<li><a href="/AdminLogin" class="nav-link text-white btn btn-danger">Admin</a></li>
+<li><a href="/SupplierLogin" class="nav-link text-white btn btn-danger">Supplier</a></li>
+<li><a href="/RetailerLogin" class="nav-link text-white btn btn-danger">Retailer</a></li>
+
+</ul>
+</div>
+
+<style>
+    *{
+padding: 0;
+margin: 0;
+text-decoration: none;
+list-style: none;
+box-sizing: border-box;
+}
+body{
+font-family: lato;
+}
+.nav-area{
+background: #262626;
+height: 62px;
+width: 100%;
+}
+.logo {
+line-height: 70px;
+padding: 0 40px;
+}
+.nav-area ul{
+float: right;
+margin-right: 20px;
+}
+.nav-area ul li {
+display: inline-block;
+line-height: 30px;
+margin: 0 5px;
+}
+.nav-area ul li a {
+color: #fff;
+font-size: 14px;
+padding: 22px 15px;
+text-transform: uppercase;
+font-weight: bold;
+}
+
+.btn-area{
+font-size: 30px;
+color: white;
+float: left;
+line-height: 62px;
+margin-right: 40px;
+}
+#box{
+display: none;
+}
+@media (max-width: 860px){
+.btn-area{
+display: block;
+}
+.nav-area ul{
+position: fixed;
+width: 100%;
+height: 100vh;
+top: 62px;
+left: -100%;
+text-align: center;
+transition: all .5s;
+}
+.nav-area ul li {
+display: block;
+margin: 0;
+line-height: 30px;
+padding: 25px 0;
+}
+.nav-area ul li a{
+font-size: 30px;
+}
+
+
+#box:checked ~ ul{
+left: 0;
+}
+}
+
+</style>
+{% endif%}

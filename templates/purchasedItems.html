@@ -1,0 +1,105 @@
+{% include 'nav.html'%}
+<br><br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+          {% for purchase in purchases %}
+            {% set totalPrice = namespace(value=0) %}
+            {%set supplier = get_supplier_by_id(purchase['supplierId'])%}
+            {%set purchase_items = get_purchase_item_by_id(purchase['_id'])%}
+            {% set totalPrice = namespace(value=0) %}
+            <div class="card p-3 mt-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-danger" style="font-size:15px">Purchased By (Supplier)</div>
+                        <div style="font-size:20px" class="text-primary">{{supplier['name']}}({{supplier['phone']}})</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-danger" style="font-size:15px">Date</div>
+                        <div style="font-size:20px" class="text-primary">{{purchase['date'].strftime("%d-%m-%Y %I:%M %p")}}</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-danger" style="font-size:15px">Status</div>
+                        <div style="font-size:20px" class="text-primary">{{purchase['status']}}</div>
+                    </div>
+                    {% if purchase['status']!='cart'%}
+                     <div class="col-md-3">
+                         <a href="view_purchase_payment?purchase_id={{purchase['_id']}}" class="btn btn-primary mt-3">View Payment</a>
+                    </div>
+                    {% endif%}
+                </div>
+                <table class="table table-bordered table-sm mt-5" style="font-size:20px">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Color</th>
+                            <th>Cloth Type</th>
+                            <th>Ordered</th>
+                            <th>Item Price</th>
+                            <th>Total Price <br><b style="font-size:13px">(Purchased Quantity)*(Item Price)</b></th>
+                             {% if purchase['status']=='cart'%}
+                            <th>Action</th>
+                            {% endif%}
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                          {% for purchase_item in purchase_items%}
+                          {%set cloth_inventory = get_cloth_inventory_by_id(purchase_item['cloth_inventory_id'])%}
+                          {% set totalPrice.value = totalPrice.value +float(cloth_inventory['price']) * float(purchase_item['quantity']) %}
+                          <tr>
+                               <td><img src="../static/cloth/{{cloth_inventory['picture']}}" style="width:50%;height:40px"><br>{{cloth_inventory['item_name']}}</td>
+                               <td>{{cloth_inventory['cloth_color']}}</td>
+                               <td>{{cloth_inventory['cloth_type']}}</td>
+                              <td>{{purchase_item['quantity']}}</td>
+                              <td>₹{{cloth_inventory['price']}}</td>
+                              <td>₹{{float(cloth_inventory['price'])*float(purchase_item['quantity'])}}</td>
+                              {% if purchase['status']=='cart'%}
+                              <td><a href="removePurchaseItem?purchase_item_id={{purchase_item['_id']}}&purchase_id={{purchase['_id']}}" class="btn btn-danger w-100" style="font-size:13px">Remove</a></td>
+
+                              {% endif%}
+                          </tr>
+                           {% endfor%}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="5"><b>₹{{totalPrice.value}}</b></td>
+                            </tr>
+                    </tbody>
+                </table>
+              <div class="row">
+                  {% if purchase['status']=='cart' %}
+                  <div class="col-md-4">
+                      <form action="orderPurchaseItem" method="post">
+                          <input type="hidden" name="amount" value="₹{{totalPrice.value}}">
+                          <input type="hidden" name="purchase_id" value="{{purchase['_id']}}">
+                          <input type="submit" value="Order Now" class="btn btn-primary w-50">
+                      </form>
+                  </div>
+                  {% endif%}
+                  {% if session['role']=='admin'%}
+                  {% if purchase['status']=='ordered' %}
+                  <div class="col-md-4">
+                      <form action="dispatchPurchaseOrder" method="post">
+                          <input type="hidden" name="purchase_id" value="{{purchase['_id']}}">
+                          <input type="submit" value="Dispatch" class="btn btn-primary w-50">
+                      </form>
+                  </div>
+                  {% endif%}
+                  {% endif%}
+                  {% if session['role']=='supplier'%}
+                  {% if purchase['status']=='dispatched' %}
+                  <div class="col-md-4">
+                      <form action="markAsReceived" method="post">
+                          <input type="hidden" name="purchase_id" value="{{purchase['_id']}}">
+                          <input type="submit" value="Mark As Received" class="btn btn-primary w-50">
+                      </form>
+                  </div>
+                  {% endif%}
+                  {% endif%}
+              </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+{% include 'nav.html'%}
+<style>
+    body{
+        background-image:url("https://www.tatkalbanking.com/assets/images/myproject/balances-enq.gif");
+        background-repeat: no repeat;
+        background-size: 1550px 700px;
+    }
+    .card{
+            background: rgba(0, 0, 0, 0.9); /* Black with 70% opacity */
+            border-radius: 50px 50px 50px 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+          }
+
+</style>
+
+<br>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            <div class="card  text-white p-4 mt-5">
+                <form action="orderPurchaseItem1" method="post">
+                     <h5 class="text-center">Payment : {{amount}}</h5>
+                            <input type="hidden" name="purchase_id" value="{{purchase_id}}">
+                              <input type="hidden" name="amount" value="{{amount}}">
+                            <div>
+                                <label class="mt-2" for="card_number">Card Number</label>
+                                <input type="number" class="form-control" id="card_number" placeholder="Enter 16 digits" required>
+                            </div>
+                            <div>
+                                <label class="mt-2" for="card_name">Card Holder</label>
+                                <input type="text" class="form-control" id="card_name" placeholder="Enter name on card" required>
+                            </div>
+                            <div>
+                                <label class="mt-2" for="cvv">CVV</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="Enter 3 digit cvv" required>
+                            </div>
+                            <div>
+                                <label for="expiry_date" class="mt-2">Expiry Date</label>
+                                <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" required>
+                            </div>
+                            <input type="submit" value="Order" class="btn btn-danger w-100 mt-2">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

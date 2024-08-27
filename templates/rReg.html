@@ -1,0 +1,59 @@
+{% include 'nav.html'%}
+<style>
+    body{
+        background-image:url("https://t4.ftcdn.net/jpg/06/34/09/69/360_F_634096945_nT013AXOaokOmXXU0mRlfSLmnSbbmZXw.jpg");
+        background-repeat: no repeat;
+        background-size: 1550px 700px;
+    }
+
+    .card{
+            background: rgba(0, 0, 0, 0.4); /* Black with 70% opacity */
+            border-radius: 50px 50px 50px 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+          }
+    .form-control{
+        background: rgba(0, 0, 0, 0.1); /* Black with 70% opacity */
+    }
+</style>
+<br>
+<div class="container mt-5">
+    <div class="card p-3 mt-3 text-white h4">
+        <form action="rReg1" method="post">
+            <div class="h3 text-center">Retailer Register</div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mt-1">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" required>
+                    </div>
+                    <div class="form-group mt-1">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control mt-1" id="email" placeholder="Enter email" name="email" required>
+                    </div>
+                    <div class="form-group mt-1">
+                        <label for="phone">Phone</label>
+                        <input type="number" class="form-control" id="phone" placeholder="Enter phone" name="phone" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Location</label>
+                        <input type="text" class="form-control" id="location" placeholder="Enter Location" name="location" required>
+                    </div>
+
+                    <div class="form-group mt-1">
+                        <label for="address">Address</label>
+                        <textarea  class="form-control " id="address" placeholder="Address" name="address" required></textarea>
+                    </div>
+                    <div class="mt-">
+                        <input type="submit" value="Register" class="btn btn-dark w-100 mt-3">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

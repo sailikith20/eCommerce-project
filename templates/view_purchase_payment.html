@@ -1,0 +1,21 @@
+{% include 'nav.html'%}
+<br>
+<div class="container-fluid mt-3">
+    <div class="text-center h4">View Payment</div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>₹{{payment['amount']}}</td>
+            <td>{{payment['date']}}</td>
+            <td>{{payment['status']}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

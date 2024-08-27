@@ -1,0 +1,88 @@
+{% include 'nav.html'%}
+<br>
+<div class="container-fluid mt-4">
+    <div class="row">
+    <div class="col-md-4">
+        <div class="card p-3 mt-3">
+            <form action="addClothInventory" method="post" enctype="multipart/form-data">
+                <div class="h4 text-center">Add Cloths</div>
+                    <div class="form-group mt-1">
+                        <label for="item_name">Item Name</label>
+                        <input type="text" class="form-control" id="item_name" placeholder="Enter Item Name" name="item_name" required>
+                    </div>
+                    <div class="form-group mt-1">
+                        <label for="price">Price</label>
+                        <input type="text" class="form-control mt-1" id="price" placeholder="Enter Price" name="price" required>
+                    </div>
+                     <div class="form-group mt-1">
+                        <label>Quantity</label>
+                        <input type="number" min="1" class="form-control mt-1" id="quantity" placeholder="Enter Quantity" name="quantity" required>
+                    </div>
+                   <div class="form-group mt-1">
+                        <label>Cloth Type</label>
+                        <input type="text" class="form-control mt-1" id="cloth_type" placeholder="Enter Cloth Type" name="cloth_type" required>
+                    </div>
+                  <div class="form-group mt-1">
+                        <label>Cloth Color</label>
+                        <input type="text" class="form-control mt-1" id="cloth_color" placeholder="Enter Cloth Color" name="cloth_color" required>
+                    </div>
+                    <div class="form-group mt-1">
+                        <label for="picture">Upload Picture</label>
+                        <input type="file" class="form-control" id="picture"  name="picture" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="Category_id">Categories</label>
+                        <select name="category_id" id="Category_id" class="form-control" required>
+                            <option value="">Choose Category</option>
+                            {% for category in categories%}
+                            <option value="{{category['_id']}}">{{category['category_name']}}</option>
+                            {% endfor%}
+                        </select>
+                    </div>
+                    <div class="form-group mt-1">
+                        <label for="description">Description</label>
+                        <textarea  class="form-control " id="description" placeholder="Description" name="description" required></textarea>
+                    </div>
+                    <input type="submit" value="Add Item" class="btn btn-success w-100 mt-2">
+              </form>
+            </div>
+    </div>
+        <div class="col-md-8">
+            <form action="clothInventory">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-control mb-2" name="category_id" onchange="this.form.submit()">
+                            <option value="">Choose Categories</option>
+                            {% for category in categories2%}
+                            <option  value="{{category['_id']}}" {% if category_id == str(category['_id'])%} selected {% endif%}>{{category['category_name']}}</option>
+                            {% endfor%}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="search" class="form-control mb-2" onchange="this.form.submit()" name="keyword" placeholder="Search">
+                    </div>
+                </div>
+
+            </form>
+          <div class="row">
+              {%for clothInventory in clothInventories%}
+              {% set category  = get_category_by_id(clothInventory['category_id'])%}
+               <div class="col-md-4">
+                   <div class="card p-2">
+                     <div class="card-header">Item Name : {{clothInventory['item_name']}}</div>
+                       <img src="../static/cloth/{{clothInventory['picture']}}" style="max-width:100%;height:200px">
+                       <div class="h5 text-center mt-1">₹{{clothInventory['price']}}</div>
+                       <div class="h6">Quantity : {{clothInventory['quantity']}}</div>
+                       <div class="h6">Color : {{clothInventory['cloth_color']}}</div>
+                       <div class="h6">Cloth Type : {{clothInventory['cloth_type']}}</div>
+                       <div class="h6">Category: {{category['category_name']}}</div>
+                       <div class="card-footer">
+                           <a href="editItem?item_id={{clothInventory['_id']}}" class="btn btn-primary w-100">Edit Item</a>
+                       </div>
+                   </div>
+               </div>
+              {% endfor%}
+          </div>
+        </div>
+</div>
+</div>
